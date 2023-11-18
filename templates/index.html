@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Aggregator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .chat-container {
+            max-width: 800px;
+            margin: auto;
+            overflow: auto;
+        }
+
+        .chat-message {
+            background: #1e1e1e;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .chat-message img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .author-name {
+            font-weight: bold;
+            color: #fff;
+            /* Default color, will be overridden by JS */
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="chat-container" id="chat">
+        <!-- Chat messages will appear here -->
+    </div>
+
+    <script type="text/javascript">
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        socket.on('chat_msg', function (data) {
+            var chatContainer = document.getElementById('chat');
+            var newMessage = document.createElement('div');
+            newMessage.className = 'chat-message';
+
+            var avatarImg = document.createElement('img');
+            avatarImg.src = data.avatar;
+            newMessage.appendChild(avatarImg);
+
+            // Create and style the author's name
+            var authorName = document.createElement('span');
+            authorName.className = 'author-name';
+            authorName.style.color = getRandomColor(); // Set random color
+            authorName.textContent = data.author + ': ';
+            newMessage.appendChild(authorName);
+
+            var textNode = document.createTextNode(data.msg);
+            newMessage.appendChild(textNode);
+
+            chatContainer.appendChild(newMessage);
+            chatContainer.scrollTop = chatContainer.scrollHeight; // Auto-scroll to latest message
+        });
+
+        // Function to generate random colors
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    </script>
+</body>
+
+</html>
