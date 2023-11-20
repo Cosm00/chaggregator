@@ -1,6 +1,7 @@
 import websocket
 import requests
 import json
+import time
 
 class Restream:
     def __init__(self, chatToken):
@@ -39,6 +40,9 @@ class Restream:
 
     def on_close(self, ws, close_status_code, close_msg):
         print("### closed ###")
+        print('Reconnecting...')
+        time.sleep(2.5)
+        self.check_messages()
 
     def on_open(self, ws):
         print("Connection opened")

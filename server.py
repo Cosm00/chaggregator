@@ -29,7 +29,8 @@ def chat_message():
     message = data.get('msg', '')
     origin = data.get('origin', 'default').lower()  # Get the origin and convert to lowercase
     avatar = avatars.get(origin, avatars['default'])  # Select the appropriate avatar or default
-    socketio.emit('chat_msg', {'msg': message, 'avatar': avatar}, broadcast=True)
+    author = data.get('author', '')
+    socketio.emit('chat_msg', {'msg': message, 'avatar': avatar, 'author': author}, broadcast=True)
     return json.dumps({'success': True}), 200, {'ContentType':'application/json'} 
 
 if __name__ == '__main__':
