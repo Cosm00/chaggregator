@@ -71,7 +71,11 @@
             newMessage.appendChild(textNode);
 
             chatContainer.appendChild(newMessage);
-            chatContainer.scrollTop = chatContainer.scrollHeight; // Auto-scroll to latest message
+            
+            // Wait for potential media to load before scrolling
+            setTimeout(function() {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 100); // Adjust delay time as needed
         });
 
         // Function to generate random colors
