@@ -27,7 +27,7 @@ class Restream:
             eventPayload = messageData.get('payload', {}).get('eventPayload', {})
             formattedData = {
                 "msg": eventPayload.get('text', ''),
-                "author": eventPayload.get('author', {}).get('displayName', eventPayload.get('author', {}).get('name', 'Unknown Author')),
+                "author": eventPayload.get('author', {}).get('displayName', eventPayload.get('author', {}).get('name', eventPayload.get('author', {}).get('username', 'Unknown Author'))),
                 "origin": self.parse_origin(messageData.get('payload', {}).get('connectionIdentifier', ''))
             }
             self.s.post('http://127.0.0.1:38293/chatMessage', json=formattedData)
